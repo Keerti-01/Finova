@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .custom-navbar {
+            background-color: #8c52ff !important;
+        }
+        .nav-link {
+            color: white !important;
+            position: relative;
+            padding: 8px 15px;
+        }
+        .nav-link:hover::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+	<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white " href="#">
+                <img src="/images/finova.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-center">
+                Finova
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/dashboard}"><i class="fa-solid fa-house"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/budget/{userId}(userId=${user.userId})}"><i class="fas fa-wallet"></i> Budget</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/expense/{userId}(userId=${user.userId})}"><i class="fas fa-money-bill-wave"></i> Expenses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/investment/{userId}(userId=${user.userId})}"><i class="fas fa-chart-line"></i> Investment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/learning/{userId}(userId=${user.userId})}"><i class="fas fa-book"></i> Learning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/profilePage/{userId}(userId=${user.userId})}"><i class="fas fa-user"></i> Profile</a>
+                    </li>
+					<!--<li class="nav-item">
+						<a class="nav-link" th:href="@{/logout}"><i class="fas fa-user"></i> Logout</a>
+					</li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+	</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

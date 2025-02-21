@@ -1,0 +1,162 @@
+package com.finance.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+
+import com.finance.model.Expense;
+import com.finance.model.UserInfo;
+
+@Configuration
+@Controller
+public class ExpenseController {
+
+	@Autowired
+	public RestTemplate getRestTemplate() {
+		return new RestTemplate();
+	};
+	
+	private String backendurl = "http://localhost:8081/api/expenses";
+	
+	@GetMapping("/expense/{userId}")
+	public String getAllExpenses(@PathVariable String userId, Model model) {
+	    ResponseEntity<List<Expense>> response = getRestTemplate().exchange(
+	        backendurl + "/user/" + userId,
+	        HttpMethod.GET,
+	        null,
+	        new ParameterizedTypeReference<List<Expense>>() {}
+	    );
+
+	    List<Expense> expenses = response.getBody();
+	    if (expenses == null) {
+	        expenses = new ArrayList<>(); // Avoid null pointer issues
+	    }
+	    System.out.println(expenses);
+	    System.out.println("Received Budgets: " + expenses);
+	    
+	    // Fetch user info (Ensure user details are retrieved)
+	    ResponseEntity<UserInfo> userResponse = getRestTemplate().getForEntity(
+	        "http://localhost:8081/api/users/" + userId, UserInfo.class);
+	    UserInfo user = userResponse.getBody();
+	    if (user == null) {
+	        throw new RuntimeException("User not found!");
+	    }
+	    System.out.println("User ID: " + user.getUserId());
+	    
+	    model.addAttribute("expenses", expenses); // Passing data to Thymeleaf template
+	    model.addAttribute("user", user);
+	    
+	    return "expense"; 
+	}
+	
+	@GetMapping("/createExpenseForm/{userId}")
+	public String createExpenseForm(@PathVariable String userId,Model model) {
+		
+		// Fetch user info (Ensure user details are retrieved)
+	    ResponseEntity<UserInfo> userResponse = getRestTemplate().getForEntity(
+	        "http://localhost:8081/api/users/" + userId, UserInfo.class);
+	    UserInfo user = userResponse.getBody();
+	    if (user == null) {
+	        throw new RuntimeException("User not found!");
+	    }
+		model.addAttribute("expense",new Expense());
+		model.addAttribute("user",user);
+		return "addExpense";
+	}
+	
+	@PostMapping("/addExpense/{userId}")
+	public String addExpense(@PathVariable String userId, @ModelAttribute Expense expense,Model model) {
+		// Fetch user info (Ensure user details are retrieved)
+	    ResponseEntity<UserInfo> userResponse = getRestTemplate().getForEntity(
+	        "http://localhost:8081/api/users/" + userId, UserInfo.class);
+	    UserInfo user = userResponse.getBody();
+	    if (user == null) {
+	        throw new RuntimeException("User not found!");
+	    }
+	    model.addAttribute("user",user);
+	    
+	    ResponseEntity<Expense> response = getRestTemplate().postForEntity(backendurl+"/"+userId, expense, Expense.class);
+	    if (response.getStatusCode().is2xxSuccessful()) {
+	        return "redirect:/expense/" + userId;  // Redirect to list of budgets for the user
+	    } else {
+	        model.addAttribute("error", "Failed to add expense. Please try again.");
+	        return "addExpense"; // Return to the form if creation fails
+	    }
+	}
+	
+	//delete expense
+	@GetMapping("/deleteExpense/{expenseId}/{userId}")
+	public String deleteExpense(@PathVariable Long expenseId,@PathVariable String userId, Model model) {
+		ResponseEntity<UserInfo> userResponse = getRestTemplate().getForEntity(
+		        "http://localhost:8081/api/users/" + userId, UserInfo.class);
+		    UserInfo user = userResponse.getBody();
+		    if (user == null) {
+		        throw new RuntimeException("User not found!");
+		    }
+		model.addAttribute("user",user);
+	    
+	    getRestTemplate().delete(backendurl+"/"+expenseId); // Sends DELETE request to backend
+
+	    return "redirect:/expense/"+userId; // Redirect to updated budget list
+	}
+	
+	//update
+	@GetMapping("/updateExpenseForm/{expenseId}/{userId}")
+	public String updateExpenseForm(@PathVariable String userId,@PathVariable Long expenseId,Model model) {
+		
+		// Fetch user info (Ensure user details are retrieved)
+	    ResponseEntity<UserInfo> userResponse = getRestTemplate().getForEntity(
+	        "http://localhost:8081/api/users/" + userId, UserInfo.class);
+	    UserInfo user = userResponse.getBody();
+	    if (user == null) {
+	        throw new RuntimeException("User not found!");
+	    }
+	    
+	    ResponseEntity<Expense> response = getRestTemplate().getForEntity(backendurl+"/"+expenseId, Expense.class);
+	    if (response == null) {
+	        model.addAttribute("error", "Expense not found!");
+	        return "updateExpense";
+	    }
+
+		model.addAttribute("expense",response.getBody());
+		model.addAttribute("user",user);
+		return "updateExpense";
+	}
+	
+	@PostMapping("/updateExpense/{expenseId}/{userId}")
+	public String updateExpense(@PathVariable String userId, @PathVariable Long expenseId ,@ModelAttribute Expense expense,Model model) {
+		// Fetch user info (Ensure user details are retrieved)
+	    ResponseEntity<UserInfo> userResponse = getRestTemplate().getForEntity(
+	        "http://localhost:8081/api/users/" + userId, UserInfo.class);
+	    UserInfo user = userResponse.getBody();
+	    if (user == null) {
+	        throw new RuntimeException("User not found!");
+	    }
+	    model.addAttribute("user",user);
+	    
+	    try {
+	    getRestTemplate().put(backendurl+"/"+expenseId, expense);
+	    }catch(HttpClientErrorException e) {
+	    	String errorMessage = e.getResponseBodyAsString();
+	        model.addAttribute("error", errorMessage);
+	        System.out.println("Backend error: " + errorMessage);
+	        return "updateExpense";
+	    }
+	    		
+	    return "redirect:/expense/" + userId;  // Redirect to list of budgets for the user
+	}
+	
+}

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investments - FinHer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+		.custom-navbar {
+		      background-color: #8c52ff !important;
+		    }
+		    .nav-link {
+		      color: white !important;
+		      position: relative;
+		      padding: 8px 15px;
+		    }
+		    .nav-link:hover::after {
+		      content: '';
+		      position: absolute;
+		      left: 0;
+		      bottom: 0;
+		      width: 100%;
+		      height: 2px;
+		      background-color: white;
+		    }
+		    .hidden-bar {
+		      display: none;
+		      background-color: #8c52ff;
+		      color: white;
+		      text-align: center;
+		      position: fixed;
+		      bottom: 0;
+		      width: 100%;
+		      padding: 10px 0;
+		      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+		    }
+			
+		    
+			.create{
+					display: flex;
+					justify-content: flex-end;
+					margin-bottom: 15px;
+				}
+		.expense-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+			gap: 20px; /* Space between grid items */
+		}
+
+		.expense-card {
+			background-color: #f8f9fa;
+			padding: 15px;
+			border-radius: 8px;
+			box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.expense-card h5 {
+			margin-bottom: 5px;
+		}
+
+		.expense-actions {
+			margin-top: 10px;
+		}
+        .line-graph {
+            max-width: 100%;
+            height: auto;
+        }
+		.bar-container{
+			width: 800px ;
+			height: 500px ;
+			position: relative;
+			left: 25%;
+		}
+		.no-expenses{
+			display: flex;
+			justify-content: center;
+			margin-top: 10%;
+	}
+					
+	@media screen and (max-width: 768px) {
+			.hidden-bar {
+				display: flex;
+				justify-content: center;
+		    }
+			.mx-3 {
+				color: white;
+				text-decoration: none;
+		 }
+			#investmentChart{
+				height: 400px !important;
+				width: 100% !important;
+										
+			}
+			.bar-container{
+				width: 450px !important;
+				left: 0% !important;
+			}
+			.expense-card{
+				padding: 10px !important;
+				width: 80%;
+										
+			}
+			.expense-grid{
+				display: flex;
+				width: 100%;
+				align-items: center;
+			}
+			div.container.mt-4{
+				margin: 0;
+				width: 100% !important;
+			}
+									  
+		}
+    </style>
+</head>
+<body>
+	<div th:replace="~{header :: navbar}"></div>
+    <div class="container mt-4">
+		<div class="create">
+			<a th:href="@{/createInvestmentForm/{userId}(userId=${user.userId})}" class="btn btn-success mt-3" 
+				th:if="!${#lists.isEmpty(investment)}"><i class="fas fa-plus-circle"></i> Add Investment </a>
+		</div>
+		
+		<div th:if="${#lists.isEmpty(investment)}" class="no-expenses" >
+			<div class="card text-center shadow-lg p-4" style="max-width: 400px; border-radius: 15px;">
+				<div class="card-body">
+				<i class="fas fa-exclamation-circle text-danger" style="font-size: 50px;"></i>
+				<h4 class="card-title mt-3 text-danger">No Investment Found</h4>
+				<p class="card-text text-muted">🚫 Sorry, no investments added...</p>
+				<p class="card-text">Click the button below to add an investment and start managing your finances!</p>
+				<a th:href="@{/createInvestmentForm/{userId}(userId=${user.userId})}" class="btn btn-success mt-3" style="border: none;">
+					<i class="fas fa-plus-circle"></i> Add Investment</a>
+				</div>
+			</div>
+		</div>
+
+
+        <!-- Display investment data dynamically -->
+        <div class="list-group mb-4 expense-grid" th:if="${not #lists.isEmpty(investment)}">
+            <div th:each="investment : ${investment}" class="list-group-item expense-card">
+                <h5 th:text="${investment.name}">Investment Type</h5>
+                <p>
+                    Amount: <span th:text="'₹' + ${investment.amount}"></span> <br />
+                    Returns: <span th:text="${investment.returnRate} + '%'"></span> 
+                    <br>
+                    <small th:text="'Date: ' + ${investment.startDate}"></small>
+                </p>
+				<div class="expense-actions">
+					<a th:href="@{/updateInvestmentForm/{investmentId}/{userId}(investmentId=${investment.id}, userId=${user.userId})}" 
+						class="btn btn-warning btn-sm btn-update">Update</a>
+					<a th:href="@{/deleteInvestment/{investmentId}/{userId}(investmentId=${investment.id}, userId=${user.userId})}" 
+						class="btn btn-danger btn-sm btn-delete">Delete</a>
+				</div>
+            </div>
+        </div>
+		<h2 style="text-align: center; color: #8c52ff; margin: 20px 0;" 
+				th:if="!${#lists.isEmpty(investment)}">Bar Graph Analysis</h2>
+				
+		<!-- Dynamic Line Chart -->
+		<div class="bar-container">
+		<canvas id="investmentChart" style="height: 500px; width: 600px;"></canvas>
+		</div>
+    </div>
+	<div class="nav-bar text-center py-3 hidden-bar">
+	    <a th:href="@{/dashboard}" class="mx-3"><i class="fas fa-home"></i> Home</a>
+	    <a th:href="@{/budget/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-wallet"></i> Budget</a>
+	    <a th:href="@{/expense/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-chart-line"></i> Expenses</a>
+	    <a th:href="@{/investment/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-coins"></i> Investments</a>
+	    <a th:href="@{/learning/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-book"></i> Learning</a>
+	    <a class="mx-3" th:href="@{/profilePage/{userId}(userId=${user.userId})}"><i class="fas fa-user"></i> Profile</a>
+	 </div>
+	  
+	  <script th:inline="javascript">
+		var investmentData = /*[[${investment}]]*/ [];
+		document.addEventListener("DOMContentLoaded", function () {
+		    if (!investmentData || investmentData.length === 0) {
+		        console.log("No investment data available.");
+		        return;
+		    }
+
+		    let labels = investmentData.map(inv => inv.name);
+		    let amounts = investmentData.map(inv => inv.amount);
+
+		    let ctx = document.getElementById("investmentChart").getContext("2d");
+
+		    if (window.investmentChartInstance) {
+		        window.investmentChartInstance.destroy();
+		    }
+
+		    window.investmentChartInstance = new Chart(ctx, {
+		        type: "bar",
+		        data: {
+		            labels: labels,
+		            datasets: [{
+		                label: "Investment Amount (₹)",
+		                data: amounts,
+		                backgroundColor: "rgba(54, 162, 235, 0.5)",
+		                borderColor: "rgba(54, 162, 235, 1)",
+		                borderWidth: 1
+		            }]
+		        },
+		        options: {
+		            responsive: true,
+		            scales: {
+		                y: {
+		                    beginAtZero: true
+		                }
+		            }
+		        }
+		    });
+		});
+
+	      </script>
+	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
