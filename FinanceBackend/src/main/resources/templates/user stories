@@ -1,0 +1,136 @@
+# ER Diagram
+# Entities:
+# 1. User (UserID, Name, Email, Password, Income, Goals)
+# 2. Budget (BudgetID, UserID, Category, Limit, SpentAmount)
+# 3. Expense (ExpenseID, UserID, Category, Amount, Date)
+# 4. Investment (InvestmentID, UserID, Type, Amount, Returns, Date)
+# 5. LearningModule (ModuleID, Title, Content, QuizAvailable)
+# 6. Security (SecurityID, UserID, BiometricEnabled, TwoFactorAuth)
+
+# User Goals:
+# - Saving for Emergency Fund
+# - Buying a House
+# - Retirement Planning
+# - Education Fund
+# - Travel Savings
+
+# Budget Categories:
+# - Housing
+# - Food & Groceries
+# - Transportation
+# - Entertainment
+# - Healthcare
+# - Savings & Investments
+
+# Expense Categories:
+# - Rent/Mortgage
+# - Utility Bills
+# - Groceries
+# - Dining Out
+# - Transportation Costs
+# - Insurance
+# - Subscriptions
+# - Miscellaneous
+
+# Investment Types:
+# - Stocks
+# - Mutual Funds
+# - Fixed Deposits
+# - Real Estate
+# - Gold & Precious Metals
+# - Bonds
+# - Cryptocurrency
+
+# Use Case Diagram
+# Actors: User, Financial Advisor
+# Use Cases:
+# - Register & Login
+# - Set Financial Goals
+# - Track Expenses
+# - Manage Budget
+# - Use Financial Calculators
+# - Track Investments
+# - Access Learning Modules
+# - Get Financial Advice
+# - Manage Security & Privacy
+
+# Class Diagram
+# Classes & Relationships:
+# 1. User (attributes: userID, name, email, password, income, goals)
+# 2. Budget (budgetID, userID, category, limit, spentAmount)
+# 3. Expense (expenseID, userID, category, amount, date)
+# 4. Investment (investmentID, userID, type, amount, returns, date)
+# 5. LearningModule (moduleID, title, content, quizAvailable)
+# 6. Security (securityID, userID, biometricEnabled, twoFactorAuth)
+
+# Relationships:
+# - User has many Budgets, Expenses, and Investments
+# - User accesses Learning Modules
+# - User manages Security settings
+
+# Backend Implementation (Java Spring Boot)
+
+## Model Classes:
+# - User (UserID, Name, Email, Password, Income, Goals)
+# - Budget (BudgetID, UserID, Category, Limit, SpentAmount)
+# - Expense (ExpenseID, UserID, Category, Amount, Date)
+# - Investment (InvestmentID, UserID, Type, Amount, Returns, Date)
+# - LearningModule (ModuleID, Title, Content, QuizAvailable)
+
+## Repository Interfaces:
+# - UserRepository (extends JpaRepository<User, Long>)
+# - BudgetRepository (extends JpaRepository<Budget, Long>)
+# - ExpenseRepository (extends JpaRepository<Expense, Long>)
+# - InvestmentRepository (extends JpaRepository<Investment, Long>)
+# - LearningModuleRepository (extends JpaRepository<LearningModule, Long>)
+
+## Service Classes:
+# - UserService (handles business logic for users)
+# - BudgetService (handles business logic for budgets)
+# - ExpenseService (handles business logic for expenses)
+# - InvestmentService (handles business logic for investments)
+# - LearningModuleService (handles business logic for learning modules)
+
+## Controller Classes:
+# - UserController (handles API endpoints for user operations)
+# - BudgetController (handles API endpoints for budget operations)
+# - ExpenseController (handles API endpoints for expense operations)
+# - InvestmentController (handles API endpoints for investment operations)
+# - LearningModuleController (handles API endpoints for learning module operations)
+
+## API Endpoints:
+
+### User Module:
+# - POST /api/users/register -> Register a new user
+# - POST /api/users/login -> Authenticate user
+# - GET /api/users/{id} -> Get user by ID
+# - PUT /api/users/{id} -> Update user details
+# - DELETE /api/users/{id} -> Delete user account
+
+### Budget Module:
+# - POST /api/budgets -> Create a new budget
+# - GET /api/budgets/{id} -> Get budget by ID
+# - GET /api/budgets/user/{userId} -> Get all budgets for a user
+# - PUT /api/budgets/{id} -> Update budget details
+# - DELETE /api/budgets/{id} -> Delete budget
+
+### Expense Module:
+# - POST /api/expenses -> Add a new expense
+# - GET /api/expenses/{id} -> Get expense by ID
+# - GET /api/expenses/user/{userId} -> Get all expenses for a user
+# - PUT /api/expenses/{id} -> Update expense details
+# - DELETE /api/expenses/{id} -> Delete expense
+
+### Investment Module:
+# - POST /api/investments -> Add a new investment
+# - GET /api/investments/{id} -> Get investment by ID
+# - GET /api/investments/user/{userId} -> Get all investments for a user
+# - PUT /api/investments/{id} -> Update investment details
+# - DELETE /api/investments/{id} -> Delete investment
+
+### Learning Module:
+# - POST /api/learning-modules -> Add a new learning module
+# - GET /api/learning-modules/{id} -> Get learning module by ID
+# - GET /api/learning-modules -> Get all learning modules
+# - PUT /api/learning-modules/{id} -> Update learning module details
+# - DELETE /api/learning-modules/{id} -> Delete learning module
