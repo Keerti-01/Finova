@@ -158,8 +158,8 @@
 	      <a th:href="@{/dashboard}" class="mx-3"><i class="fas fa-home"></i> Home</a>
 	      <a th:href="@{/budget/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-wallet"></i> Budget</a>
 	      <a th:href="@{/expense/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-chart-line"></i> Expenses</a>
-	      <a th:href="@{/expense/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-coins"></i> Investments</a>
-	      <a href="#" class="mx-3"><i class="fas fa-book"></i> Learning</a>
+	      <a th:href="@{/investment/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-coins"></i> Investments</a>
+	      <a th:href="@{/learning/{userId}(userId=${user.userId})}" class="mx-3"><i class="fas fa-book"></i> Learning</a>
 	  	<a class=" mx-3" th:href="@{/profilePage/{userId}(userId=${user.userId})}"><i class="fas fa-user"></i> Profile</a>
 	    </div> 
 

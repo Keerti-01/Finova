@@ -1,31 +1,142 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Onboarding - FinHer</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <title>Finova</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background-color: #f5f5f5;
-      font-family: 'Poppins', sans-serif;
-    }
-    .illustration {
-      max-width: 100%;
-      height: auto;
-	  margin-top: -90px;
-	  box-shadow: inset 0px 0px 5px 5px #000;
-    }
-    .btn-get-started {
-      background-color: #6c5ce7;
-      color: white;
-      padding: 10px 30px;
-      border-radius: 25px;
-    }
-	.custom-navbar {
-	         background-color: #8c52ff !important;
-	     }
+	/* Navbar Styling */
+	    .custom-navbar {
+	      background-color: #8c52ff !important;
+	      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	    }
+	    .nav-link {
+	      color: white !important;
+	      position: relative;
+	      padding: 8px 15px;
+	      font-weight: 500;
+	    }
+	    .nav-link:hover::after {
+	      content: '';
+	      position: absolute;
+	      left: 0;
+	      bottom: 0;
+	      width: 100%;
+	      height: 2px;
+	      background-color: white;
+	    }
+		.btn {
+		  margin-right: 10px;
+		}
+		.navbar-nav {
+		  flex-direction: row;
+		}
+	    body {
+		  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		  background-color: #f8f9fa;
+	    }
+		.hero {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  text-align: center;
+		  padding: 60px 5%;
+		  background: linear-gradient(to right, #8c52ff, #a671ff);
+		  color: white;
+		  border-radius: 0 0 30px 30px;
+		  height: auto;
+		}
+		.hero-text {
+		  max-width: 100%;
+		}
+		.hero-images {  
+		  position: relative;
+		  width: 100%;
+		  display: flex;
+		  justify-content: center;
+		  flex-wrap: wrap;
+		  margin-top: 20px;
+		}
+		.hero-images img {
+		  width: 60%;
+		  border-radius: 15px;
+		  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+		  margin: 10px;
+		}
+		.hero-images img:nth-child(1) { top: -300px; left: 40px; display: none;}
+		.hero-images img:nth-child(2) { top: -120px; left: 65%; }
+		
+		@media (min-width: 768px) {
+		  .hero {
+		    flex-direction: row;
+		    text-align: left;
+		    height: 90vh;
+		  }
+		  .hero-text {
+		    max-width: 50%;
+		  }
+		  .hero-images {
+		    width: 40%;
+		    position: relative;
+		  }
+		  .hero-images img {
+		    width: 70%;
+		    position: absolute;
+		  }
+		  .hero-images img:nth-child(1) { top: -300px; left: 40px; display: block; }
+		  .hero-images img:nth-child(2) { top: -120px; left: 65%; }
+		 }
+		 
+		 
+		.about-section {
+		  padding: 40px;
+		  text-align: center;
+		}
+		.card {
+		  border: none;
+		  border-radius: 15px;
+		  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		  transition: transform 0.3s, box-shadow 0.3s;
+		  height: 90%;
+		  width: 80%;
+		  margin-left: 10%;
+		  margin-bottom: 50px;
+		}
+		.card:hover {
+		  transform: translateY(-10px);
+		  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		}
+		.card-img-top {
+		  border-top-left-radius: 15px;
+		  border-top-right-radius: 15px;
+		  height: 200px;
+		  
+		}
+		.card-body {
+		  padding: 20px;
+		}
+		.card-title {
+		  font-size: 1.5rem;
+		  font-weight: 700;
+		  margin-bottom: 15px;
+		}
+		.card-text {
+		  font-size: 1rem;
+		  color: #6c757d;
+		}
+		@media (max-width: 576px) {
+		  .card-img-top {
+		    height: 150px;
+		  }
+		}
+		footer {
+			  background-color: #8c52ff;
+			  color: white;
+			  padding: 20px;
+			  text-align: center;
+			}
+
   </style>
 </head>
 <body>
@@ -35,10 +146,11 @@
 	                <img src="/images/finova.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-center">
 	                Finova
 	            </a>
-	            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 	                <span class="navbar-toggler-icon"></span>
 	            </button>
-	            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+	            <div class="justify-content-end" id="navbarNav">
 	                <ul class="navbar-nav">
 	                    <li class="nav-item">
 	                        <a class="btn btn-light me-2" th:href="@{/loginForm}">Login</a>
@@ -50,15 +162,154 @@
 	            </div>
 	        </div>
 	    </nav>
-  <div class="container text-center">
-    <div class="row align-items-center vh-100">
-      <div class="col">
-        <img src="/images/women1.jpg" alt="Illustration" class="illustration">
-        <h3 class="my-4">Welcome to FinHer! Take control of your finances with tools tailored for you.</h3>
-        <button class="btn btn-get-started">Get Started</button>
-      </div>
+	
+		<!-- Hero Section -->
+		<section class="hero">
+		  <div class="hero-text">
+		    <h1>Manage Your Finances<br/> with <span id="dynamic-text">Finova</span></h1>
+		    <p>Take control of your financial future with personalized tools and expert advice.</p>
+		    <a th:href="@{/loginForm}" class="btn btn-light btn-lg mt-3">Get Started</a>
+		  </div>
+		  <div class="hero-images">
+		    
+		    <img src="/images/img22.PNG" alt="Finance Image 2">
+			<img src="/images/img1.jpg" alt="Finance Image 1">
+		    <!--<img src="/images/women1.jpg" alt="Finance Image 3">-->
+		  </div>
+		</section>
+
+  <!-- Why Finova Section -->
+  <section class="container mt-5">
+    <h2 class="text-center mb-4">Why Finova?</h2>
+	<p class="text-center" style="margin-bottom: 10px !important;">Discover a seamless experience in 
+		managing finances with our innovative platform.
+		 We prioritize your needs to provide trusted, flexible, and efficient solutions.</p>
+		 
+		 <div class="row mt-4">
+		     <div class="col-md-6 ">
+		         <div class="card text-center ">
+		             <img src="/images/smart-budgeting.webp" class="card-img-top" alt="Trusted By Thousands">
+		             <div class="card-body">
+		                 <h5 class="card-title">Smart Budgeting</h5>
+		                 <p class="card-text">Track your spending and stay within your budget.</p>
+		                 
+		             </div>
+		         </div>
+		     </div>
+		     <div class="col-md-6">
+		         <div class="card text-center ">
+		             <img src="/images/investment-tracking.jpg" class="card-img-top" alt="Money-Back Assurance">
+		             <div class="card-body">
+		                 <h5 class="card-title">Investment Tracking</h5>
+		                 <p class="card-text">Monitor your investments in real-time.</p>
+		                 
+		             </div>
+		         </div>
+		     </div>
+		     <div class="col-md-6">
+		         <div class="card text-center ">
+		             <img src="/images/expense-tracking.jpg" class="card-img-top" alt="Customizable Plans">
+		             <div class="card-body">
+		                 <h5 class="card-title">Expense Tracking</h5>
+		                 <p class="card-text">Categorize your expenses for smart spending.</p>
+		                 
+		             </div>
+		         </div>
+		     </div>
+		     <div class="col-md-6">
+		         <div class="card text-center ">
+		             <img src="/images/education1.jpg" class="card-img-top" alt="Security First">
+		             <div class="card-body">
+		                 <h5 class="card-title">Educational Resources</h5>
+		                 <p class="card-text">Access articles and financial tips to boost your knowledge.</p>
+		                
+		             </div>
+		         </div>
+		     </div>
+		 </div>
+
+  <!-- About Us Section -->
+  <section class="about-section mt-5">
+    <h2>About Us</h2>
+    <p>Finova is dedicated to empowering individuals to take charge of their financial well-being. 
+		We provide easy-to-use tools and educational resources to help you make informed financial decisions.</p>
+	<div class="row mt-4">
+			     <div class="col-md-4">
+			         <div class="card text-center ">
+			             <img src="/images/mission.jpg" class="card-img-top" alt="Trusted By Thousands">
+			             <div class="card-body">
+			                 <h5 class="card-title">Our Mission</h5>
+			                 <p class="card-text">Empowering individuals to take control of their financial 
+								future through innovative solutions and expert guidance.</p>
+			                 
+			             </div>
+			         </div>
+			     </div>
+				 <div class="col-md-4">
+				 			         <div class="card text-center ">
+				 			             <img src="/images/values.jpg" class="card-img-top" alt="Customizable Plans">
+				 			             <div class="card-body">
+				 			                 <h5 class="card-title">Our Values</h5>
+				 			                 <p class="card-text">Integrity, transparency, and commitment to providing secure and 
+				 								personalized financial solutions.</p>
+				 			                 
+				 			             </div>
+				 			         </div>
+				 			     </div>
+			     <div class="col-md-4">
+			         <div class="card text-center ">
+			             <img src="/images/vision.png" class="card-img-top" alt="Money-Back Assurance">
+			             <div class="card-body">
+			                 <h5 class="card-title">Our Vision</h5>
+			                 <p class="card-text">To be a global leader in financial empowerment, 
+								helping users achieve their financial goals with confidence.</p>
+			                 
+			             </div>
+			         </div>
+			     </div>
+			     
+			     </div>
+  </section>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="container">
+      <p>Contact Us: info@finova.com | +91-0680 234 567</p>
+      <p>&copy; 2025 Finova. All rights reserved.</p>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const dynamicText = document.getElementById('dynamic-text');
+    const words = ['Finova', 'Financial Innovation'];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeEffect() {
+      const currentWord = words[wordIndex];
+      const displayedText = currentWord.substring(0, charIndex);
+      dynamicText.textContent = displayedText;
+
+      if (!isDeleting && charIndex < currentWord.length) {
+        charIndex++;
+        setTimeout(typeEffect, 150);
+      } else if (isDeleting && charIndex > 0) {
+        charIndex--;
+        setTimeout(typeEffect, 100);
+      } else {
+        isDeleting = !isDeleting;
+        if (!isDeleting) {
+          wordIndex = (wordIndex + 1) % words.length;
+        }
+        setTimeout(typeEffect, 1000);
+      }
+    }
+
+    typeEffect();
+  </script>
 </body>
 </html>

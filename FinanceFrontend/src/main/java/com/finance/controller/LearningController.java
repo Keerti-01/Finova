@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.finance.model.Expense;
 import com.finance.model.Learning;
 import com.finance.model.UserInfo;
 

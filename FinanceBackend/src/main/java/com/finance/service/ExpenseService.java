@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.finance.exception.InvalidEntityException;
-import com.finance.model.Budget;
 import com.finance.model.Expense;
 import com.finance.model.UserInfo;
 import com.finance.repository.ExpenseRepository;

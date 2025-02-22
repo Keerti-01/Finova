@@ -37,8 +37,9 @@ public class EmailService {
 
     // Method to send emails to both user and admin
     public void sendRegistrationEmailToUserAndAdmin(String userEmail, String userName) throws MessagingException {
-        String subject = "Welcome to the Finance App!";
-        String userMessage = "Dear " + userName + ",\n\nWelcome to the Finance App. Your account has been successfully created.\n\nBest regards, Finance App Team.";
+        String subject = "Welcome to the Finova Finance App!";
+        String userMessage = "Dear " + userName + ",\n\nWelcome to the Finova. Your account has been successfully created. "
+        		+ "Track your budget, investments and expenses seamlessly!!!\n\nBest regards, Finova App Team.";
         String adminMessage = "A new user has registered: " + userName + " (" + userEmail + ").";
 
         // Send email to user
