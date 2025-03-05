@@ -169,7 +169,7 @@ public class UserController {
 	@GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/loginForm";
+        return "redirect:/";
     }
 	
 	@GetMapping("/profilePage/{userId}")

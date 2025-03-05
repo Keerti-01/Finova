@@ -83,6 +83,10 @@
 		display: flex;
 		justify-content: space-between;
 	}
+	.formatted-content {
+	  white-space: pre-wrap; /* Ensures line breaks and spaces are preserved */
+	  font-family: inherit; /* Keeps the default font style */
+	}
   </style>
 </head>
 <body>
@@ -103,7 +107,7 @@
 		  <p class="card-text" th:text="${learning.description}">Short description here.</p>
           <button class="btn read-button" onclick="toggleContent(this)">Read More</button>
           <div class="expand-content mt-3">
-            <p th:text="${learning.content}">Full content of the learning module goes here.</p>
+           <pre class="formatted-content" th:utext="${learning.content}"></pre>
             <button class="btn btn-outline-secondary" onclick="toggleContent(this)"><i class="fas fa-arrow-up"></i> Collapse</button>
           </div>
 		  
